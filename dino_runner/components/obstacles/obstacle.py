@@ -2,7 +2,6 @@ from pygame.sprite import Sprite
 
 from utils.constants import SCREEN_WIDTH
 
-
 class Obstacle(Sprite):
     def __init__(self, image, type):
         self.image = image

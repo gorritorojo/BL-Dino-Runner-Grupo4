@@ -2,7 +2,6 @@ import pygame
 from components.dinosaurio import Dinosaur
 from components.nube import Cloud
 from components.obstacles.obstacle_manager import ObstacleManager
-
 from utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 
@@ -15,7 +14,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.playing = False
         self.cloud= Cloud()
-        self.dino=Dinosaur()
+        self.dino = Dinosaur()
         self.obstacle_manager =ObstacleManager()
         self.game_speed = 20
         self.x_pos_bg = 0 
@@ -40,7 +39,7 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.dino.update(user_input) 
-        self.obstacle_manager.update()
+        self.obstacle_manager.update(self)
 
     def draw(self): 
         self.score()
