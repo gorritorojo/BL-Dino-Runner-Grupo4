@@ -15,11 +15,13 @@ class Game:
         self.clock = pygame.time.Clock()
         self.playing = False
         self.cloud= Cloud()
-        self.dino = Dinosaur()
-        self.obstacle_manager = ObstacleManager()
+        self.dino=Dinosaur()
+        self.obstacle_manager =ObstacleManager()
         self.game_speed = 20
         self.x_pos_bg = 0 
         self.y_pos_bg = 380
+        self.death_count = 0
+        self.points = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -40,7 +42,8 @@ class Game:
         self.dino.update(user_input) 
         self.obstacle_manager.update()
 
-    def draw(self):
+    def draw(self): 
+        self.score()
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
@@ -58,3 +61,8 @@ class Game:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
+
+    def score(self):
+        self.points += 1
+        if self.points % 100 == 0:
+            self.game_speed +=1

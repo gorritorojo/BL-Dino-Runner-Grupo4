@@ -25,6 +25,7 @@ class Dinosaur(Sprite):
             self.run()
         if self.dino_jump:
             self.jump()
+        
 
         if input[pygame.K_UP] and not self.dino_jump:
             self.dino_run = False
@@ -53,5 +54,7 @@ class Dinosaur(Sprite):
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
+            
+            
 
         
