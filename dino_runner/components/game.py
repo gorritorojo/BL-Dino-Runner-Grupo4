@@ -1,8 +1,11 @@
 import pygame
+from components.ability import Ability
 from components.dinosaurio import Dinosaur
-from components.nube import Cloud
 from components.obstacles.obstacle_manager import ObstacleManager
-from utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from utils.constants import (BG, DINO_DEAD, GAME_OVER, HEARD, ICON, 
+RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS,
+)
+
 from utils import text_utils
 
 class Game:
@@ -14,14 +17,16 @@ class Game:
         self.clock = pygame.time.Clock()
         self.playing = False
         self.game_runing = True
-        self.cloud= Cloud()
+        self.ability= Ability()
         self.dino = Dinosaur()
         self.obstacle_manager =ObstacleManager()
-        self.game_speed = 20
+        self.game_speed = 10
         self.x_pos_bg = 0 
         self.y_pos_bg = 380
         self.death_count = 0
         self.points = 0
+        pygame.mixer.music.load("assets/Other/musica_fondo.mp3")
+        
 
     def run(self):
         # Game loop: events - update - draw
@@ -42,6 +47,7 @@ class Game:
         while self.game_runing:
             if not self.playing:
                 self.show_menu()
+            #pygame.mixer.music.play(-1)
 
     def events(self):
         for event in pygame.event.get():
@@ -52,19 +58,20 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.dino.update(user_input) 
         self.obstacle_manager.update(self)
-        self.cloud.update()
+        self.ability.movimiento()
         
 
     def draw(self): 
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((0, 0, 0))
         self.draw_background()
         self.score()
-        self.cloud.draw(self.screen)
+        self.ability.draw(self.screen)
         self.dino.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
+        
 
     def draw_background(self):
         image_width = BG.get_width()
@@ -81,10 +88,17 @@ class Game:
             self.game_speed +=1
         text,text_rect = text_utils.get_score_element(self.points)
         self.screen.blit(text, text_rect)
+        self.screen.blit(HEARD,(1000,60))
 
     def show_menu(self):
-        self.screen.fill((255,255,0))
-        self.show_menu_options()
+        if self.death_count <= 0 : 
+            self.screen.fill((255,255,0))
+            self.show_menu_options()
+        else: 
+            self.screen.fill((255,255,255))
+            self.show_menu_options()
+
+
 
         pygame.display.update()
         self.hundle_event_menu()
@@ -112,5 +126,7 @@ class Game:
         message_instruction = "press any key to start the game"
         text_instruction, text_intruction_rect = text_utils.get_centered_message(message_instruction, height= pos_y)
         self.screen.blit(text_instruction,text_intruction_rect)
-
-        self.screen.blit(RUNNING[0],((SCREEN_WIDTH//2), (pos_y-150)))
+        if self.death_count <= 0:
+            self.screen.blit(RUNNING[0],((SCREEN_WIDTH//2), (pos_y-150)))  
+        else:
+            self.screen.blit(GAME_OVER,((SCREEN_WIDTH//3), (pos_y-200))), self.screen.blit(DINO_DEAD,((SCREEN_WIDTH//2), (pos_y-150)))

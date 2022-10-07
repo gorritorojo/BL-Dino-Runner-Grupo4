@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from utils.constants import JUMPING, RUNNING 
+from utils.constants import JUMPING, RUNNING
 
 class Dinosaur(Sprite):
     X_POS = 50
@@ -15,6 +15,7 @@ class Dinosaur(Sprite):
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS 
         self.jump_vel = self.JUMP_VEL
+        self.jump_sound = pygame.mixer.Sound("assets/Other/salto.mp3")
         self.dino_run = True
         self.dino_jump = False
         self.dino_step = 0
@@ -30,11 +31,10 @@ class Dinosaur(Sprite):
         if input[pygame.K_UP] or input[pygame.K_SPACE] and not self.dino_jump:
             self.dino_run = False
             self.dino_jump = True
-        
+            self.jump_sound.play()
             
         if self.dino_step >= 10:
             self.dino_step = 0
-
         
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
@@ -49,7 +49,7 @@ class Dinosaur(Sprite):
     def jump(self):
         self.image = self.dino_jump_img
         if self.dino_jump:
-            self.dino_rect.y -= self.jump_vel * 2
+            self.dino_rect.y -= self.jump_vel * 1.3
             self.jump_vel -= 0.5
         if self.jump_vel < -self.JUMP_VEL:
             self.dino_rect.y = self.Y_POS
