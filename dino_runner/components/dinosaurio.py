@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from utils.constants import JUMPING, RUNNING
+from utils.constants import JUMPING, RUNNING 
 
 class Dinosaur(Sprite):
     X_POS = 50
@@ -27,10 +27,11 @@ class Dinosaur(Sprite):
             self.jump()
         
 
-        if input[pygame.K_UP] and not self.dino_jump:
+        if input[pygame.K_UP] or input[pygame.K_SPACE] and not self.dino_jump:
             self.dino_run = False
             self.dino_jump = True
-
+        
+            
         if self.dino_step >= 10:
             self.dino_step = 0
 
@@ -53,8 +54,5 @@ class Dinosaur(Sprite):
         if self.jump_vel < -self.JUMP_VEL:
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
+            self.dino_run = True
             self.jump_vel = self.JUMP_VEL
-            
-            
-
-        

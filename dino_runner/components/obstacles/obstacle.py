@@ -1,5 +1,4 @@
 from pygame.sprite import Sprite
-
 from utils.constants import SCREEN_WIDTH
 
 class Obstacle(Sprite):
@@ -10,9 +9,7 @@ class Obstacle(Sprite):
         self.image_rect.x = SCREEN_WIDTH
 
     def draw(self, screen):
-        screen.blit(self.image[self.type],self.image_rect)
+        screen.blit(self.image[self.type], self.image_rect)
 
     def update(self):
-        self.image_rect.x -= 20
-
-
+        self.image_rect.x -= 10
